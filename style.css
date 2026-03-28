@@ -1,10 +1,130 @@
+:root {
+  --bg-dark: oklch(0.1 0.01 198);
+  --bg: oklch(0.15 0.01 198);
+  --bg-light: oklch(0.2 0.01 198);
+  --text: oklch(0.96 0.02 198);
+  --text-muted: oklch(0.76 0.02 198);
+  --highlight: oklch(0.5 0.02 198);
+  --border: oklch(0.4 0.02 198);
+  --border-muted: oklch(0.3 0.02 198);
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   width: 100%;
+}
+
+body {
+  background: var(--bg-dark);
+  color: var(--text-muted);
+  height: 100vh;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+main {
+  height: 100%;
+  width: 100%;
+}
+
+.container {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.search {
+  padding-inline: 5px;
+  padding-block: 5px;
+  border-radius: 5px;
+  outline: none;
+  background: var(--bg-light);
+  color: var(--text);
+  border: none;
+}
+
+.card-container {
+  display: flex;
+  gap: 20px;
+  width: min(880px, 90%);
+  height: 350px;
+  align-items: center;
+  justify-content: space-evenly;
+  padding-inline: 10px;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.card-container::-webkit-scrollbar {
+  display: none;
+}
+.card-container {
+  scroll-behavior: smooth;
+}
+
+.card {
+  position: relative;
+  width: 200px;
+  height: 300px;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid var(--border-muted);
+  border-top-color: var(--border);
+  box-shadow: 0 4px 60px oklch(from var(--border-muted) l c h/0.5);
+  flex-shrink: 0;
+}
+
+.bg-img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  display: block;
+}
+
+.blurred-layer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: bottom;
+  filter: blur(10px);
+  z-index: 1;
+  mask-image: linear-gradient(to top, rgb(0, 0, 0), rgba(0, 0, 0, 0));
+  mask-size: 100% 100%;
+  mask-repeat: no-repeat;
+  -webkit-mask-image: linear-gradient(to top, rgb(0, 0, 0), rgba(0, 0, 0, 0));
+  -webkit-mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+}
+
+.content {
+  position: absolute;
+  bottom: 20px;
+  left: 10px;
+  color: var(--text);
+  z-index: 2;
+}
+.content h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  text-shadow: 2px 4px 16px var(--bg-dark);
+  text-transform: capitalize;
+}
+.content p {
+  font-size: 11px;
+  color: var(--text);
+  line-height: 1.4;
+  text-shadow: 0px 4px 16px var(--bg-dark);
 }/*# sourceMappingURL=style.css.map */
