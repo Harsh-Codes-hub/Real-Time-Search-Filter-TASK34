@@ -53,45 +53,54 @@ const users = [
   },
 ];
 
+function createEL(tag, classlist = [], text = "") {
+  const el = document.createElement(tag);
+  if (classlist.length) {
+    classlist.forEach((className) => {
+      el.classList.add(className);
+    });
+  }
+  if (text !== undefined) el.textContent = text;
+  return el;
+}
+
+function createCard(obj) {
+  const card = createEL("div", ["card"]);
+
+  const image = createEL("img", ["bg-img"]);
+  image.src = obj.pfp;
+  
+  const blurredLayer = createEL("div", ["blurred-layer"]);
+  blurredLayer.style.backgroundImage = `url(${obj.pfp})`;
+  
+  const content = createEL("div", ["content"]);
+
+  const profileName = createEL("h3", [], obj.profileName);
+
+  const tagline = createEL("p", [], obj.tagline);
+
+  content.append(profileName, tagline);
+  card.append(image, blurredLayer, content);
+
+  return card;
+}
 // rendering users
 function showUsers(arr) {
   cardContainer.innerHTML = "";
   arr.forEach((user) => {
-    const cardDiv = document.createElement("div");
-    cardDiv.classList.add("card");
-
-    const cardImage = document.createElement("img");
-    cardImage.classList.add("bg-img");
-    cardImage.setAttribute("src", `${user.pfp}`);
-
-    const blurredLayer = document.createElement("div");
-    blurredLayer.classList.add("blurred-layer");
-    blurredLayer.style.backgroundImage = `url(${user.pfp})`;
-
-    const cardContent = document.createElement("div");
-    cardContent.classList.add("content");
-
-    const profileName = document.createElement("h3");
-    profileName.textContent = `${user.profileName}`;
-
-    const tagline = document.createElement("p");
-    tagline.textContent = `${user.tagline}`;
-
-    cardContent.appendChild(profileName);
-    cardContent.appendChild(tagline);
-    cardDiv.appendChild(cardImage);
-    cardDiv.appendChild(blurredLayer);
-    cardDiv.appendChild(cardContent);
-    cardContainer.appendChild(cardDiv);
+    const card = createCard(user);
+    cardContainer.append(card);
   });
 }
 
 function filter(arr) {
-  const filtered = arr.filter((user) => {
-    return user.profileName.toLowerCase().includes(input.value.toLowerCase());
-  });
-
-  showUsers(filtered);
+  const value = input.value.toLowerCase()
+  if (value.trim) {
+    const filtered = arr.filter((user) => {
+      return user.profileName.toLowerCase().startsWith(value);
+    });
+    showUsers(filtered);
+  }
 }
 
 showUsers(users);
