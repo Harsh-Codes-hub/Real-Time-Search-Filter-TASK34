@@ -53,7 +53,7 @@ const users = [
   },
 ];
 
-function createEL(tag, classlist = [], text = "") {
+function createEL(tag, classlist = [], text) {
   const el = document.createElement(tag);
   if (classlist.length) {
     classlist.forEach((className) => {
@@ -69,10 +69,10 @@ function createCard(obj) {
 
   const image = createEL("img", ["bg-img"]);
   image.src = obj.pfp;
-  
+
   const blurredLayer = createEL("div", ["blurred-layer"]);
   blurredLayer.style.backgroundImage = `url(${obj.pfp})`;
-  
+
   const content = createEL("div", ["content"]);
 
   const profileName = createEL("h3", [], obj.profileName);
@@ -84,23 +84,33 @@ function createCard(obj) {
 
   return card;
 }
-// rendering users
+
 function showUsers(arr) {
   cardContainer.innerHTML = "";
-  arr.forEach((user) => {
-    const card = createCard(user);
-    cardContainer.append(card);
-  });
+  if (arr.length) {
+    arr.forEach((user) => {
+      const card = createCard(user);
+      cardContainer.append(card);
+    });
+  } else {
+    const h1 = createEL("h1", [], "NO RESULTS");
+    cardContainer.append(h1);
+  }
 }
 
 function filter(arr) {
-  const value = input.value.toLowerCase()
-  if (value.trim) {
-    const filtered = arr.filter((user) => {
-      return user.profileName.toLowerCase().startsWith(value);
-    });
-    showUsers(filtered);
+  const value = input.value.toLowerCase().trim();
+  if (!value) {
+    showUsers(arr);
+    return;
   }
+
+  const filtered = arr.filter((user) => {
+    const name = user.profileName.toLowerCase();
+    const tagline = user.tagline.toLowerCase();
+    return name.includes(value) || tagline.includes(value);
+  });
+  showUsers(filtered);
 }
 
 showUsers(users);
